@@ -8,7 +8,7 @@ export const runtime = 'nodejs';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { chart, messages } = body;
+    const { chart, messages, userConfig } = body;
 
     let systemPrompt = SYSTEM_PROMPT_INTERPRET;
 
@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
         }))
       : [{ role: 'user' as const, content: 'Kính xin Đại Sư luận giải tổng quan mệnh cách lá số này.' }];
 
-    return streamAIResponse(systemPrompt, chatMessages);
+    return streamAIResponse(systemPrompt, chatMessages, userConfig);
   } catch (err: unknown) {
     const errorMsg = err instanceof Error ? err.message : 'Dữ liệu yêu cầu không hợp lệ.';
     return new Response(JSON.stringify({ error: errorMsg }), {

@@ -6,6 +6,7 @@ import StarField from '@/components/StarField';
 import { useTheme, type Theme } from '@/components/ThemeProvider';
 import AnnouncementModal from '@/components/AnnouncementModal';
 import ThemeToggle from '@/components/ThemeToggle';
+import SettingsModal from '@/components/SettingsModal';
 
 // ─── 滚动入场 wrapper ────────────────────────────────────
 function FadeIn({
@@ -446,6 +447,7 @@ export default function HomePage() {
           LÁ SỐ TỬ VI
         </div>
         <div className="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
+          <SettingsModal />
           <ThemeToggle />
           <motion.button
             whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}

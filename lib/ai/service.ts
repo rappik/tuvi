@@ -1,11 +1,18 @@
 /**
  * AI Streaming Service
  * Hỗ trợ đa nhà cung cấp: Google Gemini (ưu tiên), DeepSeek, OpenAI.
+ * Cho phép sử dụng Key hệ thống (.env.local) hoặc Key cá nhân người dùng gửi từ trình duyệt (localStorage).
  */
 
 export interface ChatMessage {
   role: 'user' | 'assistant' | 'system';
   content: string;
+}
+
+export interface UserApiConfig {
+  apiKey?: string;
+  provider?: 'gemini' | 'openai' | 'deepseek';
+  model?: string;
 }
 
 export function createSSEStream(
@@ -43,21 +50,31 @@ export function createSSEStream(
 }
 
 /**
- * Xử lý gọi stream tới AI provider thích hợp dựa vào biến môi trường
+ * Xử lý gọi stream tới AI provider thích hợp dựa vào cấu hình cá nhân hoặc biến môi trường
  */
 export async function streamAIResponse(
   systemPrompt: string,
-  messages: ChatMessage[]
+  messages: ChatMessage[],
+  userConfig?: UserApiConfig
 ): Promise<Response> {
-  const geminiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
-  const deepseekKey = process.env.DEEPSEEK_API_KEY;
-  const openaiKey = process.env.OPENAI_API_KEY;
+  const userKey = userConfig?.apiKey?.trim();
+  const userProvider = userConfig?.provider;
+  const userModel = userConfig?.model?.trim();
+
+  // Xác định API Key và Provider được ưu tiên
+  const geminiKey = userKey && (!userProvider || userProvider === 'gemini')
+    ? userKey
+    : (process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY);
+
+  const isUserOpenAI = userKey && (userProvider === 'openai' || userProvider === 'deepseek');
+  const deepseekKey = isUserOpenAI && userProvider === 'deepseek' ? userKey : process.env.DEEPSEEK_API_KEY;
+  const openaiKey = isUserOpenAI && userProvider === 'openai' ? userKey : process.env.OPENAI_API_KEY;
   const mimoKey = process.env.MIMO_API_KEY;
 
   // ─── 1. GOOGLE GEMINI API (Ưu tiên hàng đầu) ─────────────────────
-  if (geminiKey) {
+  if (geminiKey && !isUserOpenAI) {
     return createSSEStream(async (push) => {
-      const configuredModel = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
+      const configuredModel = userModel || process.env.GEMINI_MODEL || 'gemini-2.5-flash';
       // Danh sách các mô hình dự phòng thông minh khi gặp 503 (quá tải đột xuất) hoặc 429
       const candidateModels = Array.from(new Set([
         configuredModel,
@@ -159,7 +176,7 @@ export async function streamAIResponse(
   // ─── 2. DEEPSEEK / OPENAI / MIMO (OpenAI Compatible) ─────────────
   if (deepseekKey || openaiKey || mimoKey) {
     const isDeepSeek = !!deepseekKey;
-    const isMimo = !!mimoKey && !isDeepSeek;
+    const isMimo = !!mimoKey && !isDeepSeek && !openaiKey;
 
     const apiKey = isDeepSeek ? deepseekKey : (isMimo ? mimoKey : openaiKey);
     let baseUrl = isDeepSeek
@@ -171,11 +188,11 @@ export async function streamAIResponse(
     baseUrl = baseUrl.replace(/\/+$/, '');
     const endpoint = `${baseUrl}/chat/completions`;
 
-    const model = isDeepSeek
+    const model = userModel || (isDeepSeek
       ? (process.env.DEEPSEEK_MODEL || 'deepseek-chat')
       : isMimo
         ? (process.env.MIMO_MODEL || 'mimo')
-        : (process.env.OPENAI_MODEL || 'gpt-4o-mini');
+        : (process.env.OPENAI_MODEL || 'gpt-4o-mini'));
 
     return createSSEStream(async (push) => {
       const openAiMessages = [
@@ -240,19 +257,21 @@ export async function streamAIResponse(
   return createSSEStream(async (push) => {
     push(`### ✦ Kích Hoạt Tính Năng Luận Giải Tử Vi Bằng AI
 
-Hệ thống chưa tìm thấy **API Key** trong cấu hình môi trường (\`.env.local\`).
+Hệ thống chưa tìm thấy **API Key** (trong cấu hình hệ thống hoặc trình duyệt cá nhân).
 
 ---
 
-#### 🌟 Hướng Dẫn Cấu Hình Miễn Phí Với Google Gemini:
-1. Truy cập **[Google AI Studio](https://aistudio.google.com/)** và đăng nhập bằng tài khoản Google.
-2. Bấm nút **"Create API key"** (hoàn toàn miễn phí, hạn mức sử dụng cá nhân thoải mái).
-3. Mở tệp tin \`.env.local\` trong thư mục dự án và thêm dòng:
+#### 🌟 Cách 1: Tự Nhập API Key Trực Tiếp Trên Trình Duyệt (Khuyên dùng)
+- Bấm vào nút **⚙️ Cài Đặt** ở góc trên thanh công cụ.
+- Dán mã **Google Gemini API Key** của bạn và chọn **Lưu vào trình duyệt**.
+- Mã khóa sẽ được lưu an toàn trong \`localStorage\` trên máy của bạn và không chia sẻ ra ngoài.
+
+#### 🌟 Cách 2: Cấu Hình Trong Tệp \`.env.local\` (Dành cho chủ máy chủ)
+1. Lấy API Key miễn phí tại **[Google AI Studio](https://aistudio.google.com/)**.
+2. Thêm vào tệp \`.env.local\`:
    \`\`\`env
    GEMINI_API_KEY=khoá_api_của_bạn_ở_đây
    \`\`\`
-4. Lưu tệp và làm mới lại trang web hoặc khởi động lại server (\`npm run dev\`).
-
-*(Ngoài ra hệ thống cũng hỗ trợ \`DEEPSEEK_API_KEY\` hoặc \`OPENAI_API_KEY\` nếu bạn có sẵn).*`);
+3. Khởi động lại server (\`npm run dev\`).`);
   });
 }

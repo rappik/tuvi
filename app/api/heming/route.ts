@@ -8,7 +8,7 @@ export const runtime = 'nodejs';
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { chartA, chartB, question } = body;
+    const { chartA, chartB, question, userConfig } = body;
 
     if (!chartA || !chartB) {
       return new Response(JSON.stringify({ error: 'Cần cung cấp đủ 2 lá số để đối chiếu hợp số.' }), {
@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
       { role: 'user', content: userPrompt },
     ];
 
-    return streamAIResponse(systemPrompt, messages);
+    return streamAIResponse(systemPrompt, messages, userConfig);
   } catch (err: unknown) {
     const errorMsg = err instanceof Error ? err.message : 'Dữ liệu yêu cầu không hợp lệ.';
     return new Response(JSON.stringify({ error: errorMsg }), {

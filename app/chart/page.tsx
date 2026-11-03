@@ -1,19 +1,52 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import BirthForm from '@/components/BirthForm';
 import ChartBoard from '@/components/ChartBoard';
 import InsightPanel from '@/components/InsightPanel';
 import TimeNav, { type TimeView } from '@/components/TimeNav';
 import ThemeToggle from '@/components/ThemeToggle';
+import SettingsModal from '@/components/SettingsModal';
 import { generateChart } from '@/lib/ziwei/algorithm';
 import type { BirthInfo, ZiweiChart, Palace } from '@/lib/ziwei/types';
+import { getSavedCurrentChart, saveCurrentChart } from '@/lib/storage';
 
 export default function ChartPage() {
   const [chart, setChart] = useState<ZiweiChart | null>(null);
   const [selectedPalace, setSelectedPalace] = useState<Palace | null>(null);
   const [view, setView] = useState<TimeView>('mingpan');
   const [liunianYear, setLiunianYear] = useState(() => new Date().getFullYear());
+
+  // Tự động khôi phục tinh bàn đã lưu khi người dùng vào lại trang
+  useEffect(() => {
+    const savedChart = getSavedCurrentChart();
+    if (savedChart) {
+      setChart(savedChart);
+    }
+  }, []);
+
+  // Lắng nghe sự kiện xóa Local Storage từ SettingsModal để reset tinh bàn
+  useEffect(() => {
+    const handleStorageCleared = () => {
+      setChart(null);
+      setSelectedPalace(null);
+    };
+
+    window.addEventListener('ziwei-storage-cleared', handleStorageCleared);
+    return () => window.removeEventListener('ziwei-storage-cleared', handleStorageCleared);
+  }, []);
+
+  const handleGenerateChart = (info: BirthInfo) => {
+    const newChart = generateChart(info);
+    setChart(newChart);
+    saveCurrentChart(newChart);
+  };
+
+  const handleResetChart = () => {
+    setChart(null);
+    setSelectedPalace(null);
+    saveCurrentChart(null);
+  };
 
   return (
     <div style={{ background: 'var(--bg-0)', minHeight: '100vh', transition: 'background 0.35s ease' }}>
@@ -48,6 +81,7 @@ export default function ChartPage() {
           >
             Hợp Số
           </Link>
+          <SettingsModal />
           <ThemeToggle />
         </div>
       </header>
@@ -72,7 +106,7 @@ export default function ChartPage() {
               borderColor: 'var(--bdr)',
             }}
           >
-            <BirthForm onSubmit={(info: BirthInfo) => setChart(generateChart(info))} />
+            <BirthForm onSubmit={handleGenerateChart} />
           </div>
         </main>
       ) : (
@@ -81,7 +115,7 @@ export default function ChartPage() {
           <div className="flex items-center justify-between mb-4">
             <button
               type="button"
-              onClick={() => { setChart(null); setSelectedPalace(null); }}
+              onClick={handleResetChart}
               className="inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all duration-150 hover:opacity-80"
               style={{
                 borderColor: 'var(--t-border)',

@@ -7,6 +7,8 @@ import { generateChart as buildChart } from '@/lib/ziwei/algorithm';
 import type { BirthInfo, ZiweiChart } from '@/lib/ziwei/types';
 import { useTheme } from '@/components/ThemeProvider';
 import ThemeToggle from '@/components/ThemeToggle';
+import SettingsModal from '@/components/SettingsModal';
+import { getUserApiConfig } from '@/lib/storage';
 
 // ─── AiContent 渲染器（与 InsightPanel 一致）────────────────
 function AiContent({ text, streaming }: { text: string; streaming?: boolean }) {
@@ -109,10 +111,16 @@ export default function HemingPage() {
       setChartA(cA);
       setChartB(cB);
 
+      const userConfig = typeof getUserApiConfig === 'function' ? getUserApiConfig() : undefined;
       const res = await fetch('/api/heming', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chartA: cA, chartB: cB, question: q ?? undefined }),
+        body: JSON.stringify({
+          chartA: cA,
+          chartB: cB,
+          question: q ?? undefined,
+          userConfig,
+        }),
       });
       if (res.status === 404) { setApiMissing(true); throw new Error('api-missing'); }
       if (!res.ok || !res.body) throw new Error();
@@ -185,6 +193,7 @@ export default function HemingPage() {
         <span style={{ fontSize: '12px', color: 'var(--ac)', letterSpacing: '0.1em' }}>Phân Tích Hợp Số</span>
         <div style={{ flex: 1 }} />
         <span className="hidden sm:inline" style={{ fontSize: '11px', color: 'var(--tx-3)', marginRight: '8px' }}>Tình Cảm · Hợp Tác · Gia Đạo</span>
+        <SettingsModal />
         <ThemeToggle />
       </header>
 
@@ -210,6 +219,7 @@ export default function HemingPage() {
             <span style={labelStyle}>ĐƯƠNG SỐ A</span>
             <BirthForm
               hideSubmit
+              storageKey="ziwei_heming_form_a"
               onSubmit={() => {}}
               onFormSave={setFormA}
             />
@@ -220,6 +230,7 @@ export default function HemingPage() {
             <span style={labelStyle}>ĐƯƠNG SỐ B</span>
             <BirthForm
               hideSubmit
+              storageKey="ziwei_heming_form_b"
               onSubmit={() => {}}
               onFormSave={setFormB}
             />

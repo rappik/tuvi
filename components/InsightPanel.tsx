@@ -9,6 +9,7 @@ import {
   formatSiHua,
   PALACE_VI_MAP,
 } from '@/lib/ziwei/vietnamese';
+import { getUserApiConfig } from '@/lib/storage';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -272,7 +273,11 @@ Hành động thực tế phù hợp để đón lộc hoặc phòng ngừa tr�
       const res = await fetch('/api/interpret', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chart, messages: apiMessages }),
+        body: JSON.stringify({
+          chart,
+          messages: apiMessages,
+          userConfig: getUserApiConfig(),
+        }),
       });
       if (res.status === 404) throw new Error('api-missing');
       if (!res.ok) throw new Error('Yêu cầu thất bại');

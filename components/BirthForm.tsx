@@ -6,6 +6,7 @@ import { useTheme } from '@/components/ThemeProvider';
 import { PROVINCES } from '@/lib/ziwei/cities';
 import { formToBirthInfo, calcTrueSolarBranch } from '@/lib/ziwei/share';
 import { formatBranch, SHICHEN_VI } from '@/lib/ziwei/vietnamese';
+import { getSavedBirthFormData, saveBirthFormData } from '@/lib/storage';
 
 export interface BirthFormState {
   name: string;
@@ -28,6 +29,8 @@ interface BirthFormProps {
   onFormSave?: (data: BirthFormState) => void;
   /** 隐藏内部「立即起盘」按钮（合盘等场景由父级统一触发） */
   hideSubmit?: boolean;
+  /** Khóa lưu trong localStorage (mặc định lưu form lá số chính) */
+  storageKey?: string;
 }
 
 /** 检查日期是否合法 */
@@ -37,7 +40,7 @@ function isValidDate(y: number, m: number, d: number): boolean {
   return date.getFullYear() === y && date.getMonth() === m - 1 && date.getDate() === d;
 }
 
-export default function BirthForm({ onSubmit, loading, initialData, onFormSave, hideSubmit }: BirthFormProps) {
+export default function BirthForm({ onSubmit, loading, initialData, onFormSave, hideSubmit, storageKey }: BirthFormProps) {
   const { theme } = useTheme();
   const isDark = theme === 'dark';
 
@@ -58,11 +61,60 @@ export default function BirthForm({ onSubmit, loading, initialData, onFormSave, 
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [submitAttempted, setSubmitAttempted] = useState(false);
 
-  // 表单状态变化时实时同步给父级（合盘等场景下父级靠这个收集双方数据）
+  // Tự động khôi phục dữ liệu đã lưu trong localStorage khi mount
+  useEffect(() => {
+    if (!initialData) {
+      const saved = getSavedBirthFormData(storageKey);
+      if (saved && (saved.year || saved.name || saved.month || saved.day)) {
+        setForm((prev) => ({
+          ...prev,
+          name: saved.name ?? prev.name,
+          year: saved.year ?? prev.year,
+          month: saved.month ?? prev.month,
+          day: saved.day ?? prev.day,
+          clockHour: saved.clockHour ?? prev.clockHour,
+          clockMinute: saved.clockMinute ?? prev.clockMinute,
+          unknownTime: saved.unknownTime ?? prev.unknownTime,
+          province: saved.province ?? prev.province,
+          city: saved.city ?? prev.city,
+          longitude: saved.longitude ?? prev.longitude,
+          gender: saved.gender ?? prev.gender,
+        }));
+      }
+    }
+  }, [initialData, storageKey]);
+
+  // Lắng nghe sự kiện xóa sạch localStorage để reset form
+  useEffect(() => {
+    const handleClear = () => {
+      setForm({
+        name: '',
+        year: '',
+        month: '',
+        day: '',
+        clockHour: '8',
+        clockMinute: '0',
+        unknownTime: false,
+        province: '',
+        city: '',
+        longitude: 120,
+        gender: 'male',
+      });
+      setTouched({});
+      setSubmitAttempted(false);
+    };
+
+    window.addEventListener('ziwei-storage-cleared', handleClear);
+    return () => window.removeEventListener('ziwei-storage-cleared', handleClear);
+  }, []);
+
+  // Form thay đổi: đồng bộ với parent và tự động lưu vào localStorage
   useEffect(() => {
     onFormSave?.({ ...form });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [form]);
+    if (form.name || form.year || form.month || form.day) {
+      saveBirthFormData(form, storageKey);
+    }
+  }, [form, onFormSave, storageKey]);
 
   const cityList = useMemo(() => {
     const prov = PROVINCES.find(p => p.name === form.province);
