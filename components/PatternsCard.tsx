@@ -2,6 +2,7 @@
 import { motion } from 'framer-motion';
 import type { ZiweiChart } from '@/lib/ziwei/types';
 import { detectPatterns } from '@/lib/ziwei/patterns';
+import { formatPalaceShort, formatPatternName } from '@/lib/ziwei/vietnamese';
 
 const LevelStyle = {
   excellent: { dot: 'bg-amber-400', label: 'text-amber-500', badge: 'text-amber-500 bg-amber-500/10 border-amber-500/25' },
@@ -21,14 +22,16 @@ export default function PatternsCard({ chart }: { chart: ZiweiChart }) {
       transition={{ duration: 0.4 }}
       className="card-glass rounded-xl p-4 mb-4"
     >
-      <div className="text-[10px] tracking-widest mb-3 flex items-center gap-2" style={{ color: 'var(--t-faint)' }}>
-        <span style={{ color: 'var(--t-gold)', opacity: 0.6 }}>◉</span>
-        格局识别（严格古书条件）
-        <span className="text-[9px] ml-auto" style={{ color: 'var(--t-faint)', opacity: 0.75 }}>{patterns.length}个</span>
+      <div className="text-[10px] tracking-widest mb-3 flex items-center gap-2 font-medium" style={{ color: 'var(--t-faint)' }}>
+        <span style={{ color: 'var(--t-gold)', opacity: 0.8 }}>◉</span>
+        NHẬN DIỆN CÁCH CỤC (TIÊU CHUẨN CỔ THƯ)
+        <span className="text-[9px] ml-auto" style={{ color: 'var(--t-faint)', opacity: 0.75 }}>{patterns.length} cách cục thành lập</span>
       </div>
       <div className="space-y-2">
         {patterns.map((p, i) => {
           const st = LevelStyle[p.level];
+          const pNameVi = formatPatternName(p.name);
+
           return (
             <motion.div
               key={`${p.name}-${i}`}
@@ -39,17 +42,17 @@ export default function PatternsCard({ chart }: { chart: ZiweiChart }) {
             >
               <div className="flex items-center gap-2 mb-1.5">
                 <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${st.dot}`} />
-                <span className={`text-[11px] font-medium ${st.label}`}>{p.name}</span>
+                <span className={`text-[11.5px] font-semibold ${st.label}`}>{pNameVi}</span>
                 <div className="flex gap-1 ml-auto">
                   {p.palaces.slice(0, 2).map(pa => (
-                    <span key={pa} className={`text-[8px] px-1.5 py-px rounded-full border ${st.badge}`}>
-                      {pa.replace('宫', '')}
+                    <span key={pa} className={`text-[8.5px] px-1.5 py-px rounded-full border ${st.badge}`}>
+                      {formatPalaceShort(pa)}
                     </span>
                   ))}
                 </div>
               </div>
 
-              <p className="text-[10px] leading-relaxed pl-3.5" style={{ color: 'var(--t-text2)' }}>
+              <p className="text-[10.5px] leading-relaxed pl-3.5" style={{ color: 'var(--t-text2)' }}>
                 {p.description}
               </p>
 
@@ -57,31 +60,31 @@ export default function PatternsCard({ chart }: { chart: ZiweiChart }) {
                 <div className="mt-2 pl-3.5 space-y-0.5">
                   {p.conditions.required.length > 0 && (
                     <div className="text-[9px] leading-relaxed" style={{ color: 'var(--t-text2)', opacity: 0.85 }}>
-                      <span className="font-medium" style={{ color: 'var(--t-gold)' }}>必须</span>
+                      <span className="font-semibold" style={{ color: 'var(--t-gold)' }}>Bắt buộc</span>
                       <span style={{ opacity: 0.6 }}> · </span>
-                      {p.conditions.required.join('、')}
+                      {p.conditions.required.join(', ')}
                     </div>
                   )}
                   {p.conditions.bonus && p.conditions.bonus.length > 0 && (
                     <div className="text-[9px] leading-relaxed" style={{ color: 'var(--t-text2)', opacity: 0.85 }}>
-                      <span className="font-medium text-emerald-500">加分</span>
+                      <span className="font-semibold text-emerald-500">Cát lợi gia tăng</span>
                       <span style={{ opacity: 0.6 }}> · </span>
-                      {p.conditions.bonus.join('、')}
+                      {p.conditions.bonus.join(', ')}
                     </div>
                   )}
                   {p.conditions.breaking && p.conditions.breaking.length > 0 && (
                     <div className="text-[9px] leading-relaxed" style={{ color: 'var(--t-text2)', opacity: 0.85 }}>
-                      <span className="font-medium text-orange-500">破格</span>
+                      <span className="font-semibold text-orange-500">Lưu ý phá cách</span>
                       <span style={{ opacity: 0.6 }}> · </span>
-                      {p.conditions.breaking.join('、')}
+                      {p.conditions.breaking.join(', ')}
                     </div>
                   )}
                 </div>
               )}
 
               {p.source && (
-                <div className="text-[9px] mt-1.5 pl-3.5" style={{ color: 'var(--t-faint)', opacity: 0.5 }}>
-                  出处 · {p.source}
+                <div className="text-[9px] mt-1.5 pl-3.5" style={{ color: 'var(--t-faint)', opacity: 0.6 }}>
+                  Xuất xứ cổ thư · {p.source}
                 </div>
               )}
             </motion.div>

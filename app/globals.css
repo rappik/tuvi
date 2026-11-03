@@ -47,7 +47,19 @@
 
   /* 卡片/内容块背景 */
   --bg-card: #FFFFFF;
-  --bg-page: #fbf6e8;
+  --bg-page: #FBF9F5;
+
+  /* ─── Tinh bàn & Panels Tokens (Giao diện Sáng - Cổ phong thanh nhã) ─── */
+  --t-bg: #FFFFFF;
+  --t-surface: #FAF7F2;
+  --t-card: #FFFFFF;
+  --t-border: #E8E2D2;
+  --t-border-acc: rgba(161, 98, 7, 0.35);
+  --t-gold: #92400E;
+  --t-text: #1C1917;
+  --t-text1: #0C0A09;
+  --t-text2: #44403C;
+  --t-faint: #78716C;
 
   /* 圆角 */
   --r-xs:  4px;
@@ -88,6 +100,35 @@
 
   --bg-card: rgba(255,255,255,0.04);
   --bg-page: #020810;
+
+  /* ─── Tinh bàn & Panels Tokens (Giao diện Tối - Huyền tinh dạ) ─── */
+  --t-bg: #060d1a;
+  --t-surface: #0a1224;
+  --t-card: rgba(12, 22, 44, 0.7);
+  --t-border: rgba(212, 168, 67, 0.15);
+  --t-border-acc: rgba(212, 168, 67, 0.35);
+  --t-gold: #d4a843;
+  --t-text: #e8eef6;
+  --t-text1: #f0f4fa;
+  --t-text2: #9db0d0;
+  --t-faint: #6a7a96;
+}
+
+/* ─── Hiệu ứng chuyển đổi Theme mượt mà ──────────────────── */
+.theme-transitioning,
+.theme-transitioning *,
+.theme-transitioning *::before,
+.theme-transitioning *::after {
+  transition: background-color 0.35s ease, border-color 0.35s ease, color 0.25s ease, box-shadow 0.35s ease !important;
+}
+
+/* ─── Card Glass Thủy Tinh Khói Mờ ───────────────────────── */
+.card-glass {
+  background: var(--t-card);
+  border: 1px solid var(--t-border);
+  box-shadow: var(--sh-sm);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 /* ─── 全局基础 ───────────────────────────────────────────── */

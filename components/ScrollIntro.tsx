@@ -8,9 +8,9 @@ interface ScrollIntroProps {
   skipLabel?: string;
 }
 
-const BEIDOU = ['天枢', '天璇', '天玑', '天权', '玉衡', '开阳', '摇光'];
+const BEIDOU = ['Thiên Xu', 'Thiên Toàn', 'Thiên Cơ', 'Thiên Quyền', 'Ngọc Hoành', 'Khai Dương', 'Dao Quang'];
 
-export default function ScrollIntro({ onComplete, skipLabel = '跳 过' }: ScrollIntroProps) {
+export default function ScrollIntro({ onComplete, skipLabel = 'BỎ QUA' }: ScrollIntroProps) {
   // visible：整个 intro 是否在显示
   // unrolled：卷轴是否已展开（控制内容浮现）
   const [visible, setVisible] = useState(true);
@@ -148,41 +148,41 @@ export default function ScrollIntro({ onComplete, skipLabel = '跳 过' }: Scrol
                   marginBottom: 'clamp(16px, 2.5vh, 28px)',
                 }} />
 
-                {/* 大字「紫微命盘」 */}
+                {/* 大字「LÁ SỐ TỬ VI」 */}
                 <h1 style={{
-                  fontSize: 'clamp(48px, 8vw, 110px)',
+                  fontSize: 'clamp(38px, 6.5vw, 90px)',
                   fontWeight: 700,
                   color: '#1a1208',
-                  letterSpacing: 'clamp(0.18em, 0.25vw, 0.3em)',
-                  lineHeight: 1.05,
+                  letterSpacing: 'clamp(0.12em, 0.2vw, 0.22em)',
+                  lineHeight: 1.1,
                   margin: 0,
                   textShadow: '0 1px 0 rgba(255,250,235,0.3)',
                   whiteSpace: 'nowrap',
                 }}>
-                  紫微命盘
+                  LÁ SỐ TỬ VI
                 </h1>
 
-                {/* 副标 楷体 */}
+                {/* 副标 */}
                 <div style={{
-                  fontSize: 'clamp(13px, 1.5vw, 18px)',
+                  fontSize: 'clamp(12px, 1.4vw, 17px)',
                   color: '#6b4818',
-                  letterSpacing: '0.4em',
+                  letterSpacing: '0.3em',
                   fontFamily: '"STKaiti", "Kaiti SC", serif',
                   marginTop: 'clamp(16px, 2.5vh, 24px)',
                   marginBottom: '6px',
                   whiteSpace: 'nowrap',
                 }}>
-                  观 天 之 象 · 察 人 之 命
+                  NGẮM TƯỢNG TRỜI · THẤU MỆNH NGƯỜI
                 </div>
                 <div style={{
                   fontSize: 'clamp(11px, 1.2vw, 14px)',
                   color: '#8b6410',
-                  letterSpacing: '0.3em',
+                  letterSpacing: '0.2em',
                   fontFamily: '"STSong", serif',
                   whiteSpace: 'nowrap',
                   opacity: 0.85,
                 }}>
-                  倪海厦《天纪》正宗体系
+                  Hệ Thống Chính Tông Nghê Hải Hạ 《Thiên Kỷ》
                 </div>
 
                 {/* 朱砂方印 */}
@@ -191,9 +191,9 @@ export default function ScrollIntro({ onComplete, skipLabel = '跳 过' }: Scrol
                   animate={unrolled ? { opacity: 1, scale: 1, rotate: -4 } : {}}
                   transition={{ delay: 0.4, duration: 0.5, ease: 'backOut' }}
                   style={{
-                    marginTop: 'clamp(20px, 3vh, 32px)',
-                    width: 'clamp(50px, 6vw, 64px)',
-                    height: 'clamp(50px, 6vw, 64px)',
+                    marginTop: 'clamp(16px, 2.5vh, 28px)',
+                    width: 'clamp(48px, 5.5vw, 60px)',
+                    height: 'clamp(48px, 5.5vw, 60px)',
                     background: '#a8302a',
                     color: '#f5ecd7',
                     display: 'flex',
@@ -202,14 +202,15 @@ export default function ScrollIntro({ onComplete, skipLabel = '跳 过' }: Scrol
                     justifyContent: 'center',
                     fontFamily: '"STSong", serif',
                     fontWeight: 700,
-                    lineHeight: 1.05,
+                    lineHeight: 1.15,
                     letterSpacing: 0,
                     boxShadow: '0 2px 6px rgba(0,0,0,0.3), inset 0 0 0 2px rgba(245,236,215,0.15)',
-                    fontSize: 'clamp(11px, 1.2vw, 13px)',
+                    fontSize: 'clamp(9px, 1vw, 11px)',
+                    textTransform: 'uppercase',
                   }}
                 >
-                  <div style={{ display: 'flex', gap: '0' }}><span>王</span><span>多</span></div>
-                  <div style={{ display: 'flex', gap: '0' }}><span>鱼</span><span>印</span></div>
+                  <div style={{ display: 'flex', gap: '3px' }}><span>TỬ</span><span>VI</span></div>
+                  <div style={{ display: 'flex', gap: '3px' }}><span>CHÍNH</span><span>TÔNG</span></div>
                 </motion.div>
 
                 {/* 底部装饰：八卦 */}

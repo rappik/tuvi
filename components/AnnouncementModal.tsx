@@ -85,14 +85,14 @@ export default function AnnouncementModal() {
               position: 'relative',
             }}>
               <div style={{ fontSize: '10px', letterSpacing: '0.4em', color: '#b8922a', opacity: 0.7, marginBottom: '6px' }}>
-                A LETTER TO USERS
+                BỨC THƯ TÂM HUYẾT
               </div>
-              <h2 style={{ fontSize: '19px', fontWeight: 700, color: '#3d2f10', letterSpacing: '0.08em', margin: 0 }}>
-                致正在使用这个平台的你
+              <h2 style={{ fontSize: '19px', fontWeight: 700, color: '#3d2f10', letterSpacing: '0.04em', margin: 0 }}>
+                Gửi bạn, người đang đồng hành cùng nền tảng này
               </h2>
               <button
                 onClick={close}
-                aria-label="关闭"
+                aria-label="Đóng"
                 style={{
                   position: 'absolute', top: '14px', right: '16px',
                   width: '28px', height: '28px',
@@ -106,7 +106,7 @@ export default function AnnouncementModal() {
               >×</button>
             </div>
 
-            {/* 限时免费 banner（最关键信息，置顶强调）*/}
+            {/* Banner tri ân */}
             <div style={{
               margin: '14px 22px 0',
               padding: '12px 16px',
@@ -116,13 +116,13 @@ export default function AnnouncementModal() {
               flexShrink: 0,
               textAlign: 'center',
             }}>
-              <div style={{ fontSize: '10px', letterSpacing: '0.3em', color: '#c45a2d', marginBottom: '4px', fontWeight: 600 }}>
-                LIMITED TIME · 限时回馈
+              <div style={{ fontSize: '10px', letterSpacing: '0.25em', color: '#c45a2d', marginBottom: '4px', fontWeight: 600 }}>
+                TRI ÂN ĐỒNG HÀNH · MIỄN PHÍ TRẢI NGHIỆM
               </div>
               <div style={{ fontSize: '14px', color: '#8b3a1a', fontWeight: 600, lineHeight: 1.6 }}>
-                <span style={{ fontSize: '16px', color: '#c45a2d', fontWeight: 700 }}>5 月 1 日 — 5 月 8 日</span>
+                <span style={{ fontSize: '15px', color: '#c45a2d', fontWeight: 700 }}>Tử Vi Đẩu Số Chính Tông · Luận Giải AI Chuyên Sâu</span>
                 <br />
-                平台全部功能 + AI 提问 全部免费开放
+                Toàn bộ tính năng lập lá số, phân tích cách cục và hỏi đáp AI đều mở tự do
               </div>
             </div>
 
@@ -136,13 +136,13 @@ export default function AnnouncementModal() {
               flex: 1,
             }}>
               <p style={{ margin: '0 0 12px' }}>
-                说实话，我真的没想到会有这么大的流量。
+                Thật lòng mà nói, tôi rất xúc động khi nền tảng nhận được sự quan tâm và đồng hành của nhiều bạn hữu yêu thích mệnh lý đến vậy.
               </p>
               <p style={{ margin: '0 0 12px' }}>
-                最开始做这个平台，我的初心其实很简单：在 AI 时代，把倪师这套原本复杂、门槛很高的体系，尽量做得更简单、更高效、更容易理解。
+                Ngay từ những ngày đầu xây dựng nền tảng này, tâm nguyện ban đầu của tôi rất đỗi giản dị: Trong thời đại công nghệ AI, mang hệ thống Tử Vi Đẩu Số của Thầy Nghê Hải Hạ — vốn sâu sắc, chuẩn xác nhưng ngưỡng cửa tiếp cận học thuật khá cao — trở nên gần gũi, tinh gọn, trực quan và dễ hiểu hơn cho người Việt.
               </p>
               <p style={{ margin: '0 0 12px' }}>
-                不一定每个人都要先学很久、看很多书，才能接触这些内容。我们希望通过这个平台，让大家用更轻松的方式，获得一些对自我、人生阶段、选择方向的参考和启发。
+                Không nhất thiết ai cũng phải dày công nghiên cứu nhiều năm hay đọc qua hàng chục pho sách cổ chữ Hán mới có thể chạm tới tinh hoa này. Chúng tôi hy vọng qua nền tảng này, mỗi người đều có thể bằng cách nhẹ nhàng, sáng suốt nhất tìm thấy cho mình những góc nhìn tham chiếu quý giá về tính cách nội tại, vận trình thời thế và phương hướng lựa chọn trong đời.
               </p>
               <p style={{
                 margin: '0 0 12px',
@@ -153,22 +153,16 @@ export default function AnnouncementModal() {
                 fontStyle: 'italic',
                 color: '#7a5e2a',
               }}>
-                倪师曾说过一句话：人怎么可能发明出完全没有用的东西呢？
+                Thầy Nghê Hải Hạ từng dạy: &ldquo;Trời đất sinh ra thuật số, con người làm sao có thể sáng tạo ra một thứ hoàn toàn vô dụng được chứ?&rdquo;
               </p>
               <p style={{ margin: '0 0 12px' }}>
-                我一直觉得，易经如此，紫微斗数也是如此。它们真正有价值的地方，不是让人被某个结果困住，而是让我们更早看见自己的性格惯性、人生课题和选择方向。看见之后，才有机会调整；理解之后，才有机会变得更好。
-              </p>
-              <p style={{ margin: '0 0 12px' }}>
-                至于那些说&ldquo;你当下在看这些，其实也是命运的一部分&rdquo;之类的话，我就不多评价了。
-              </p>
-              <p style={{ margin: '0 0 12px' }}>
-                这几天账号被小红书抬走了，<strong style={{ color: '#c45a2d' }}>5 月 3 号开始恢复正常更新。</strong>
+                Tôi luôn tin rằng Kinh Dịch như vậy, Tử Vi Đẩu Số cũng như vậy. Giá trị đích thực của thuật số không phải là khiến con người ta hoang mang, sợ hãi hay cam chịu trước một số mệnh định sẵn, mà là giúp ta sớm nhìn thấu quán tính bản thân, bài học cuộc đời và ngã rẽ nhân sinh. Chỉ khi nhìn thấy, ta mới có cơ hội tu dưỡng sửa mình; chỉ khi thấu suốt, ta mới đủ trí tuệ để kiến tạo một tương lai tốt đẹp hơn.
               </p>
               <p style={{ margin: '0 0 16px', color: '#3d2f10', fontWeight: 500 }}>
-                最后，真心祝愿大家都能越来越了解自己，越来越爱自己，也越来越有能力爱身边的人。
+                Cuối cùng, tự đáy lòng kính chúc tất cả các bạn ngày càng thấu hiểu bản thân sâu sắc, luôn giữ tâm thế an nhiên vững vàng và gặt hái nhiều hạnh phúc, bình an trên mọi nẻo đường đời.
               </p>
               <p style={{ margin: 0, textAlign: 'right', fontSize: '13px', color: '#7a5e2a' }}>
-                ——谢谢大家 🙏
+                —— Trân trọng cảm ơn tất cả các bạn 🙏
               </p>
             </div>
 
@@ -191,13 +185,13 @@ export default function AnnouncementModal() {
                   border: 'none',
                   borderRadius: '10px',
                   fontSize: '13px',
-                  letterSpacing: '0.1em',
+                  letterSpacing: '0.05em',
                   fontWeight: 500,
                   cursor: 'pointer',
                   boxShadow: '0 4px 12px rgba(184,146,42,0.3)',
                 }}
               >
-                我知道了
+                Tôi đã hiểu
               </button>
             </div>
           </motion.div>

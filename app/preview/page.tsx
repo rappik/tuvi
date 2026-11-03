@@ -31,23 +31,23 @@ export default function PreviewPage() {
             SCROLL · INTRO · PREVIEW
           </div>
           <h1 style={{
-            fontSize: 'clamp(28px, 3.5vw, 40px)',
-            letterSpacing: '0.18em',
+            fontSize: 'clamp(26px, 3.5vw, 38px)',
+            letterSpacing: '0.12em',
             color: '#e8dcc4',
             marginBottom: '16px',
             fontWeight: 600,
           }}>
-            紫微卷轴 · 开场预览
+            Cuộn Tranh Thư Họa · Mở Màn Lá Số
           </h1>
           <p style={{
             fontSize: '14px', color: '#a89878',
-            maxWidth: '500px', lineHeight: 1.9,
-            letterSpacing: '0.1em',
+            maxWidth: '520px', lineHeight: 1.8,
+            letterSpacing: '0.05em',
             marginBottom: '40px',
             fontFamily: '"STKaiti", "Kaiti SC", serif',
           }}>
-            刚才看到的卷轴效果会在每次进入主页时缓缓铺开。<br />
-            如果满意，告诉我，我把它接到主页 / 上线。
+            Hiệu ứng cuộn tranh thư họa cổ phong tái hiện khoảnh khắc mở màn của một lá số Tử Vi.<br />
+            Mang phong vị hoài cổ, trang trọng và đậm đà triết lý văn hóa Á Đông.
           </p>
 
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'center', marginBottom: '24px' }}>
@@ -59,13 +59,13 @@ export default function PreviewPage() {
                 padding: '14px 28px',
                 fontSize: '14px',
                 fontFamily: '"STSong", serif',
-                letterSpacing: '0.3em',
+                letterSpacing: '0.15em',
                 border: 'none',
                 cursor: 'pointer',
                 fontWeight: 600,
               }}
             >
-              再 播 放 一 次
+              PHÁT LẠI LẦN NỮA
             </button>
             <button
               onClick={() => router.push('/')}
@@ -75,25 +75,25 @@ export default function PreviewPage() {
                 padding: '14px 28px',
                 fontSize: '14px',
                 fontFamily: '"STSong", serif',
-                letterSpacing: '0.3em',
+                letterSpacing: '0.15em',
                 border: '1px solid rgba(232,220,196,0.25)',
                 cursor: 'pointer',
               }}
             >
-              进 入 原 版 首 页
+              VÀO TRANG CHỦ
             </button>
           </div>
 
           <div style={{
             marginTop: '40px', fontSize: '12px', color: '#6e6048',
-            letterSpacing: '0.15em',
+            letterSpacing: '0.1em',
             display: 'flex', gap: '20px',
           }}>
-            <Link href="/" style={{ color: 'inherit', textDecoration: 'none' }}>原版 ↗</Link>
+            <Link href="/" style={{ color: 'inherit', textDecoration: 'none' }}>Trang Chủ ↗</Link>
             <span>·</span>
-            <Link href="/chart" style={{ color: 'inherit', textDecoration: 'none' }}>命盘</Link>
+            <Link href="/chart" style={{ color: 'inherit', textDecoration: 'none' }}>Lập Lá Số</Link>
             <span>·</span>
-            <Link href="/heming" style={{ color: 'inherit', textDecoration: 'none' }}>合盘</Link>
+            <Link href="/heming" style={{ color: 'inherit', textDecoration: 'none' }}>Hợp Số</Link>
           </div>
 
           {/* 时间轴说明 */}
@@ -105,17 +105,17 @@ export default function PreviewPage() {
             fontSize: '12px',
             color: '#a89878',
             lineHeight: 1.9,
-            letterSpacing: '0.1em',
+            letterSpacing: '0.05em',
             fontFamily: '"STKaiti", serif',
             textAlign: 'left',
           }}>
-            <div style={{ color: '#c89647', marginBottom: '12px', letterSpacing: '0.2em', fontSize: '11px' }}>动画时间轴</div>
-            <div>· 0.0 ~ 1.7 s &nbsp;&nbsp;卷轴从中央向两侧展开</div>
-            <div>· 1.9 ~ 2.7 s &nbsp;&nbsp;宣纸内容浮现（标题 + 副标 + 朱砂印）</div>
-            <div>· 2.7 ~ 3.5 s &nbsp;&nbsp;停留欣赏</div>
-            <div>· 3.5 ~ 4.2 s &nbsp;&nbsp;整体淡出，进入主页</div>
+            <div style={{ color: '#c89647', marginBottom: '12px', letterSpacing: '0.15em', fontSize: '11px' }}>TIẾN TRÌNH HOẠT HỌA</div>
+            <div>· 0.0 ~ 1.7 s &nbsp;&nbsp;Cuộn tranh từ từ mở sang hai phía</div>
+            <div>· 1.9 ~ 2.7 s &nbsp;&nbsp;Họa phẩm và chữ thư pháp dần hiện ra (Đề từ + Tiêu đề + Chu sa ấn)</div>
+            <div>· 2.7 ~ 3.5 s &nbsp;&nbsp;Dừng lại để chiêm ngưỡng</div>
+            <div>· 3.5 ~ 4.2 s &nbsp;&nbsp;Toàn cảnh mờ dần và dẫn vào trang chính</div>
             <div style={{ marginTop: '12px', color: '#6e6048', fontSize: '11px' }}>
-              用户随时可点右下「跳过」直接进入主页。
+              Người xem có thể bấm &ldquo;BỎ QUA&rdquo; ở góc dưới bên phải bất cứ lúc nào.
             </div>
           </div>
         </main>
