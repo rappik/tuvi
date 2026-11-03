@@ -69,7 +69,14 @@ export const PALACE_VI_MAP: Record<string, PalaceTranslation> = {
     name: 'Nô Bộc Cung',
     shortName: 'Nô Bộc',
     meaning: 'Bạn bè, đồng nghiệp, nhân mạch, cấp dưới',
-    fullText: 'Nô Bộc / Giao Hữu (Bạn Bè & Nhân Mạch)',
+    fullText: 'Nô Bộc (Bạn Bè & Nhân Mạch)',
+    role: 'Các mối quan hệ xã giao, cấp dưới có đắc lực trung thành hay phản trắc, vòng tròn quan hệ rộng hẹp.',
+  },
+  '交友': {
+    name: 'Nô Bộc Cung',
+    shortName: 'Nô Bộc',
+    meaning: 'Bạn bè, đồng nghiệp, nhân mạch, cấp dưới',
+    fullText: 'Nô Bộc (Bạn Bè & Nhân Mạch)',
     role: 'Các mối quan hệ xã giao, cấp dưới có đắc lực trung thành hay phản trắc, vòng tròn quan hệ rộng hẹp.',
   },
   '奴仆宫': {
@@ -78,6 +85,41 @@ export const PALACE_VI_MAP: Record<string, PalaceTranslation> = {
     meaning: 'Bạn bè, nhân mạch, cấp dưới',
     fullText: 'Nô Bộc (Bạn Bè & Trợ Thủ)',
     role: 'Các mối quan hệ xã giao, sự giúp đỡ từ bạn bè hoặc cấp dưới.',
+  },
+  '奴仆': {
+    name: 'Nô Bộc Cung',
+    shortName: 'Nô Bộc',
+    meaning: 'Bạn bè, nhân mạch, cấp dưới',
+    fullText: 'Nô Bộc (Bạn Bè & Trợ Thủ)',
+    role: 'Các mối quan hệ xã giao, sự giúp đỡ từ bạn bè hoặc cấp dưới.',
+  },
+  '仆役宫': {
+    name: 'Nô Bộc Cung',
+    shortName: 'Nô Bộc',
+    meaning: 'Bạn bè, đồng nghiệp, nhân mạch, cấp dưới',
+    fullText: 'Nô Bộc (Bạn Bè & Nhân Mạch)',
+    role: 'Các mối quan hệ xã giao, cấp dưới có đắc lực trung thành hay phản trắc, vòng tròn quan hệ rộng hẹp.',
+  },
+  '仆役': {
+    name: 'Nô Bộc Cung',
+    shortName: 'Nô Bộc',
+    meaning: 'Bạn bè, đồng nghiệp, nhân mạch, cấp dưới',
+    fullText: 'Nô Bộc (Bạn Bè & Nhân Mạch)',
+    role: 'Các mối quan hệ xã giao, cấp dưới có đắc lực trung thành hay phản trắc, vòng tròn quan hệ rộng hẹp.',
+  },
+  '事业宫': {
+    name: 'Quan Lộc Cung',
+    shortName: 'Quan Lộc',
+    meaning: 'Công danh, sự nghiệp, học vấn, chức vị',
+    fullText: 'Quan Lộc (Sự Nghiệp & Công Danh)',
+    role: 'Thành tựu công việc, vị trí xã hội, khả năng lãnh đạo, phù hợp làm công chức hay tự lập lập nghiệp.',
+  },
+  '事业': {
+    name: 'Quan Lộc Cung',
+    shortName: 'Quan Lộc',
+    meaning: 'Công danh, sự nghiệp, học vấn, chức vị',
+    fullText: 'Quan Lộc (Sự Nghiệp & Công Danh)',
+    role: 'Thành tựu công việc, vị trí xã hội, khả năng lãnh đạo, phù hợp làm công chức hay tự lập lập nghiệp.',
   },
   '官禄宫': {
     name: 'Quan Lộc Cung',
@@ -416,8 +458,9 @@ export const PATTERN_VI_MAP: Record<string, { name: string; meaning: string }> =
  * - '命宫' -> 'Mệnh Cung' hoặc 'Mệnh (Bản thân)'
  */
 export function formatPalaceName(palaceCn: string, withRole = false): string {
+  if (!palaceCn) return '';
   const clean = palaceCn.endsWith('宫') ? palaceCn : `${palaceCn}宫`;
-  const info = PALACE_VI_MAP[clean] || PALACE_VI_MAP[palaceCn];
+  const info = PALACE_VI_MAP[palaceCn] || PALACE_VI_MAP[clean] || (palaceCn.endsWith('宫') ? PALACE_VI_MAP[palaceCn.slice(0, -1)] : undefined);
   if (!info) return palaceCn;
   return withRole ? `${info.name} · ${info.meaning}` : info.name;
 }
@@ -426,10 +469,12 @@ export function formatPalaceName(palaceCn: string, withRole = false): string {
  * Lấy tên Cung ngắn gọn:
  * - '命宫' -> 'Mệnh'
  * - '夫妻宫' -> 'Phu Thê'
+ * - '仆役' -> 'Nô Bộc'
  */
 export function formatPalaceShort(palaceCn: string): string {
+  if (!palaceCn) return '';
   const clean = palaceCn.endsWith('宫') ? palaceCn : `${palaceCn}宫`;
-  const info = PALACE_VI_MAP[clean] || PALACE_VI_MAP[palaceCn];
+  const info = PALACE_VI_MAP[palaceCn] || PALACE_VI_MAP[clean] || (palaceCn.endsWith('宫') ? PALACE_VI_MAP[palaceCn.slice(0, -1)] : undefined);
   return info ? info.shortName : palaceCn.replace('宫', '');
 }
 
@@ -437,8 +482,9 @@ export function formatPalaceShort(palaceCn: string): string {
  * Lấy giải nghĩa chi tiết về vai trò của Cung
  */
 export function getPalaceRole(palaceCn: string): string {
+  if (!palaceCn) return '';
   const clean = palaceCn.endsWith('宫') ? palaceCn : `${palaceCn}宫`;
-  const info = PALACE_VI_MAP[clean] || PALACE_VI_MAP[palaceCn];
+  const info = PALACE_VI_MAP[palaceCn] || PALACE_VI_MAP[clean] || (palaceCn.endsWith('宫') ? PALACE_VI_MAP[palaceCn.slice(0, -1)] : undefined);
   return info ? info.role : '';
 }
 

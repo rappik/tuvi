@@ -7,6 +7,7 @@ import {
   formatPalaceShort,
   formatStarName,
   formatSiHua,
+  getPalaceRole,
   PALACE_VI_MAP,
 } from '@/lib/ziwei/vietnamese';
 import { getUserApiConfig } from '@/lib/storage';
@@ -214,7 +215,7 @@ export default function InsightPanel({ chart, selectedPalace, selectedSiHua }: I
       ? majorStars.map(s => `${formatStarName(s.name)}${s.siHua ? ' Hóa ' + formatSiHua(s.siHua, true) : ''}`).join('、')
       : 'Vô Chính Diệu (mượn sao từ Đối Cung)';
     const palaceNameVi = formatPalaceShort(selectedPalace.name);
-    const role = PALACE_VI_MAP[selectedPalace.name]?.meaning ?? '';
+    const role = getPalaceRole(selectedPalace.name);
 
     const prompt = `Xin vui lòng phân tích trọng điểm【${palaceNameVi} Cung】(Chủ quản: ${role}), chính tinh tọa thủ là ${starDesc}:
 

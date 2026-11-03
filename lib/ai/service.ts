@@ -74,13 +74,13 @@ export async function streamAIResponse(
   // ─── 1. GOOGLE GEMINI API (Ưu tiên hàng đầu) ─────────────────────
   if (geminiKey && !isUserOpenAI) {
     return createSSEStream(async (push) => {
-      const configuredModel = userModel || process.env.GEMINI_MODEL || 'gemini-2.5-flash';
-      // Danh sách các mô hình dự phòng thông minh khi gặp 503 (quá tải đột xuất) hoặc 429
+      const configuredModel = userModel || process.env.GEMINI_MODEL || 'gemini-3.1-flash-lite';
+      // Danh sách các mô hình dự phòng thông minh tốc độ cao khi gặp 503 (quá tải đột xuất) hoặc 429
       const candidateModels = Array.from(new Set([
         configuredModel,
-        'gemini-2.0-flash',
-        'gemini-2.5-flash',
+        'gemini-3.1-flash-lite',
         'gemini-3-flash-preview',
+        'gemini-2.5-flash',
         'gemini-3.5-flash',
       ]));
 
@@ -100,6 +100,10 @@ export async function streamAIResponse(
         generationConfig: {
           temperature: 0.7,
           maxOutputTokens: 4096,
+          // Tắt suy nghĩ ngầm (thinking budget = 0) để dòng Flash phản hồi tức thì trong < 1 giây, tiết kiệm quota
+          thinkingConfig: {
+            thinkingBudget: 0,
+          },
         },
       };
 

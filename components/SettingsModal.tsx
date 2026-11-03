@@ -102,7 +102,7 @@ export default function SettingsModal({ buttonClassName }: SettingsModalProps) {
   };
 
   const defaultModels: Record<string, string[]> = {
-    gemini: ['gemini-2.5-flash (Khuyên dùng)', 'gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-pro'],
+    gemini: ['gemini-3.1-flash-lite (Siêu nhanh · Khuyên dùng)', 'gemini-3-flash-preview', 'gemini-2.5-flash'],
     openai: ['gpt-4o-mini (Khuyên dùng)', 'gpt-4o', 'gpt-3.5-turbo'],
     deepseek: ['deepseek-chat (Khuyên dùng)', 'deepseek-reasoner'],
   };
