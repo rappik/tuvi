@@ -6,42 +6,47 @@ export type Theme = 'dark' | 'light';
 const ThemeContext = createContext<{
   theme: Theme;
   toggle: () => void;
-}>({ theme: 'dark', toggle: () => {} });
-
-function getInitialTheme(): Theme {
-  if (typeof document !== 'undefined') {
-    const attr = document.documentElement.getAttribute('data-theme');
-    if (attr === 'light' || attr === 'dark') return attr;
-  }
-  return 'dark';
-}
+  mounted: boolean;
+}>({ theme: 'dark', toggle: () => {}, mounted: false });
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(getInitialTheme);
+  // Luôn khởi tạo là 'dark' trên cả Server và Client render lần đầu để đảm bảo 100% khớp Hydration
+  const [theme, setTheme] = useState<Theme>('dark');
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    const saved = localStorage.getItem('ziwei-theme') as Theme | null;
-    if (saved === 'light' || saved === 'dark') setTheme(saved);
+    try {
+      const saved = localStorage.getItem('ziwei-theme') as Theme | null;
+      if (saved === 'light' || saved === 'dark') {
+        setTheme(saved);
+        document.documentElement.setAttribute('data-theme', saved);
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    } catch {
+      // phòng ngừa môi trường không có localStorage
+    }
   }, []);
 
   useEffect(() => {
     if (!mounted) return;
-    const root = document.documentElement;
-    root.setAttribute('data-theme', theme);
-    localStorage.setItem('ziwei-theme', theme);
+    try {
+      const root = document.documentElement;
+      root.setAttribute('data-theme', theme);
+      localStorage.setItem('ziwei-theme', theme);
+    } catch {}
   }, [theme, mounted]);
 
   const toggle = () => {
     const root = document.documentElement;
     root.classList.add('theme-transitioning');
-    setTheme(t => t === 'dark' ? 'light' : 'dark');
+    setTheme(t => (t === 'dark' ? 'light' : 'dark'));
     setTimeout(() => root.classList.remove('theme-transitioning'), 420);
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, toggle }}>
+    <ThemeContext.Provider value={{ theme, toggle, mounted }}>
       {children}
     </ThemeContext.Provider>
   );

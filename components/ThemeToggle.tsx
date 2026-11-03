@@ -8,8 +8,9 @@ interface ThemeToggleProps {
 }
 
 export default function ThemeToggle({ className = '', minimal = false }: ThemeToggleProps) {
-  const { theme, toggle } = useTheme();
-  const isDark = theme === 'dark';
+  const { theme, toggle, mounted } = useTheme();
+  // Khi chưa mounted (SSR & hydrate), giữ nguyên trạng thái server (dark) để tránh hydration mismatch
+  const isDark = mounted ? theme === 'dark' : true;
 
   return (
     <motion.button
@@ -17,6 +18,7 @@ export default function ThemeToggle({ className = '', minimal = false }: ThemeTo
       onClick={toggle}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.94 }}
+      suppressHydrationWarning
       aria-label={isDark ? 'Chuyển sang giao diện sáng' : 'Chuyển sang giao diện tối'}
       title={isDark ? 'Chuyển sang giao diện sáng (Cổ phong ngà)' : 'Chuyển sang giao diện tối (Huyền tinh dạ)'}
       className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border cursor-pointer select-none transition-colors duration-300 ${className}`}

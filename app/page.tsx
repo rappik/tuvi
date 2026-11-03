@@ -401,8 +401,10 @@ function FeatureVisual({ index, colors: c }: { index: number; colors: ReturnType
 // ─── 主页 ─────────────────────────────────────────────────
 export default function HomePage() {
   const router = useRouter();
-  const { theme } = useTheme();
-  const c = useColors(theme);
+  const { theme, mounted } = useTheme();
+  // Giữ nguyên trạng thái dark trong quá trình SSR và hydrate để tránh Hydration Mismatch
+  const effectiveTheme = mounted ? theme : 'dark';
+  const c = useColors(effectiveTheme);
 
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ['start start', 'end start'] });
@@ -421,7 +423,11 @@ export default function HomePage() {
   }, [c.bgBase]);
 
   return (
-    <div style={{ background: c.bgBase, transition: 'background 0.35s ease' }} className="overflow-x-hidden">
+    <div
+      suppressHydrationWarning
+      style={{ background: c.bgBase, transition: 'background 0.35s ease' }}
+      className="overflow-x-hidden"
+    >
       {/* 致用户公告——首次访问全屏覆盖，关闭后才进入首页 */}
       <AnnouncementModal />
 
