@@ -142,15 +142,50 @@ export function getSavedCurrentChart(): ZiweiChart | null {
 }
 
 /**
- * Xóa sạch tất cả dữ liệu đã lưu trong localStorage (Key, Thông tin sinh, Tinh bàn)
+ * Xóa sạch tất cả dữ liệu đã lưu trong localStorage (Key, Thông tin sinh, Tinh bàn, Luận giải)
  */
 export function clearAllStoredData(): void {
   if (typeof window === 'undefined') return;
   try {
+    // Xóa các key cố định
     Object.values(STORAGE_KEYS).forEach((k) => localStorage.removeItem(k));
+    // Xóa các key cache luận giải
+    const keysToRemove: string[] = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('ziwei_insights_')) {
+        keysToRemove.push(key);
+      }
+    }
+    keysToRemove.forEach((k) => localStorage.removeItem(k));
+
     window.dispatchEvent(new Event('ziwei-storage-cleared'));
     window.dispatchEvent(new Event('ziwei-storage-updated'));
   } catch {}
+}
+
+/**
+ * Lưu cache luận giải các tab cho lá số
+ */
+export function saveChartInsights(chartKey: string, data: Record<string, any>): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(`ziwei_insights_${chartKey}`, JSON.stringify(data));
+  } catch {}
+}
+
+/**
+ * Lấy cache luận giải các tab của lá số
+ */
+export function getSavedChartInsights(chartKey: string): Record<string, any> | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = localStorage.getItem(`ziwei_insights_${chartKey}`);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
 }
 
 /**
